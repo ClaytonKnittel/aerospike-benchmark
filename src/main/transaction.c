@@ -416,18 +416,16 @@ static void
 _gen_record(as_record* rec, as_random* random, const cdata_t* cdata,
 		tdata_t* tdata, stage_t* stage)
 {
-	if (stage->random) {
-		uint32_t n_objs = obj_spec_n_bins(&stage->obj_spec);
-		as_record_init(rec, n_objs);
+	uint32_t n_objs = obj_spec_n_bins(&stage->obj_spec);
+	as_record_init(rec, n_objs);
 
+	if (stage->random) {
 		obj_spec_populate_bins(&stage->obj_spec, rec, random,
 				cdata->bin_name, stage->write_bins, stage->n_write_bins,
 				cdata->compression_ratio);
 	}
 	else {
 		as_list* list = as_list_fromval(tdata->fixed_value);
-		uint32_t n_objs = as_list_size(list);
-		as_record_init(rec, n_objs);
 
 		for (uint32_t i = 0; i < n_objs; i++) {
 			as_val* val = as_list_get(list, i);
